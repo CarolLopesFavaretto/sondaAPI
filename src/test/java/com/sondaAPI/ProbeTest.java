@@ -83,6 +83,51 @@ public class ProbeTest {
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
+    @Test
+    public void testZigZagMovement() {
+        ProbeDirection direction = new ProbeDirection(0, 0, Direction.N);
+        direction.executeCommands(List.of("M", "R", "M", "L", "M", "R", "M", "L"));
+        assertEquals(2, direction.getX());
+        assertEquals(2, direction.getY());
+        assertEquals(Direction.N, direction.getDirection());
+    }
+
+    @Test
+    public void testCircularMovement() {
+        ProbeDirection direction = new ProbeDirection(1, 1, Direction.N);
+        direction.executeCommands(List.of("M", "R", "M", "R", "M", "R", "M", "R"));
+        assertEquals(1, direction.getX());
+        assertEquals(1, direction.getY());
+        assertEquals(Direction.N, direction.getDirection());
+    }
+
+    @Test
+    public void testComplexCommandSequence() {
+        ProbeDirection direction = new ProbeDirection(2, 2, Direction.E);
+        direction.executeCommands(List.of("M", "L", "M", "R", "M", "R", "M", "L", "M"));
+        assertEquals(4, direction.getX());
+        assertEquals(2, direction.getY());
+        assertEquals(Direction.E, direction.getDirection());
+    }
+
+    @Test
+    public void testRepeatedCommands() {
+        ProbeDirection direction = new ProbeDirection(0, 0, Direction.N);
+        direction.executeCommands(List.of("M", "M", "M", "R", "M", "M", "M", "L", "M", "M", "M"));
+        assertEquals(3, direction.getX());
+        assertEquals(4, direction.getY());
+        assertEquals(Direction.N, direction.getDirection());
+    }
+
+    @Test
+    public void testReturnToStart() {
+        ProbeDirection direction = new ProbeDirection(0, 0, Direction.N);
+        direction.executeCommands(List.of("M", "M", "R", "M", "M", "R", "M", "M", "R", "M", "M", "R"));
+        assertEquals(0, direction.getX());
+        assertEquals(0, direction.getY());
+        assertEquals(Direction.N, direction.getDirection());
+    }
 }
 
 
