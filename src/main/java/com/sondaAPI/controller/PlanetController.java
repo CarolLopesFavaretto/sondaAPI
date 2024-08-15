@@ -30,6 +30,4 @@ public class PlanetController {
         counterPlanet.increment();
         return service.createPlanet(planet);
     }
-
-
 }
